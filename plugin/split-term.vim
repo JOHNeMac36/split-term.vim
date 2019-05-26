@@ -58,6 +58,7 @@ fun! s:openSplitTerm(args, count, vertical)
 
   call s:openBuffer(a:count, direction)
   call s:openTerm(a:args)
+  call s:clear_vim_settings(a:args)
 endf
 
 " Opens a new terminal buffer, but instead of doing so using split buffer, it
@@ -65,6 +66,7 @@ endf
 fun! s:openTabTerm(args)
   exe 'tabnew'
   call s:openTerm(a:args)
+  call s:clear_vim_settings(a:args)
 endf
 
 " Open a new terminal in the active buffer, while defining default mappings
@@ -84,6 +86,11 @@ fun! s:openTerm(args)
   if exists('g:split_term_default_shell')
     exe 'set shell =' . prevShell
   endif
+  call s:clear_vim_settings(a:args)
+endf
+
+fun! s:clear_vim_settings(args)
+  set nonumber norelativenumber nospell
 endf
 
 command! -count -nargs=* Term call  s:openSplitTerm(<q-args>, <count>, 0)
